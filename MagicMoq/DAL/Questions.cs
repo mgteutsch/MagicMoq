@@ -31,12 +31,52 @@ namespace MagicMoq.DAL
 
         public List<int> FirstThreeEvenInts()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+
+            //need at least up to 6:
+            List<int> numbers = Wand.ListOfNInts(10); //not sorted, though
+            //use numbers.Sort() if ListOfNInts doesn't return in order
+            List<int> result = new List<int>();
+
+            foreach (var number in numbers)
+            {
+                if (number % 2 == 0)
+                {
+                    result.Add(number);
+                }
+
+                if (result.Count == 3)
+                {
+                    break; //exit loop
+                }
+            }
+            return result;
+            //You can instead use Sort as result.Sort();
         }
 
         public List<int> FirstThreeOddInts()
         {
-            throw new NotImplementedException();
+            //Also, in order to restrict the number of numbers getting pulled in,
+            //We can create a counter that then has a limit within the foreach statement
+            //take a look at the second if statement below
+            
+            //need at least up to 5 (we have refactored for 10 to limit):
+            List<int> numbers = Wand.ListOfNInts(10);
+            List<int> result = new List<int>();
+
+            foreach (var number in numbers)
+            {
+                if (number % 2 != 0)
+                {
+                    result.Add(number);
+                }
+
+                if (result.Count == 3)
+                {
+                    break; //exit loop
+                }
+            }
+            return result;
         }
 
         public int FourMinusTwo()
@@ -87,7 +127,7 @@ namespace MagicMoq.DAL
         {
             //throw new NotImplementedException();
 
-            return Wand.One() + Wand.Two();
+            return Wand.Three();
         }
 
         public bool ReturnFalse()
@@ -102,6 +142,7 @@ namespace MagicMoq.DAL
             //throw new NotImplementedException();
 
             return Wand.True();
+            //in class example: !Wand.False();
         }
 
         public string SayHelloWorld()
@@ -134,7 +175,7 @@ namespace MagicMoq.DAL
 
         public int ZeroPlusZero()
         {
-            throw new NotImplementedException();
+            return Wand.Zero();
         }
     }
 }

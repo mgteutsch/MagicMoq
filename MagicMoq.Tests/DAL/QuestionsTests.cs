@@ -121,7 +121,7 @@ namespace MagicMoq.Tests.DAL
         {
             // Arrange
             Mock<Answers> mock_answers = new Mock<Answers>();
-            // Add code that mocks the "Three" method response
+            mock_answers.Setup(a => a.Three()).Returns(3);
             Questions questions = new Questions(mock_answers.Object);
 
             // Act
@@ -137,7 +137,7 @@ namespace MagicMoq.Tests.DAL
         {
             // Arrange
             Mock<Answers> mock_answers = new Mock<Answers>();
-            // Add code that mocks the "True" method response
+            mock_answers.Setup(a => a.True()).Returns(true);
 
             Questions questions = new Questions(mock_answers.Object);
 
@@ -154,7 +154,8 @@ namespace MagicMoq.Tests.DAL
         {
             // Arrange
             Mock<Answers> mock_answers = new Mock<Answers>();
-            // Add code that mocks the "False" method response
+            mock_answers.Setup(a => a.False()).Returns(false);
+
             Questions questions = new Questions(mock_answers.Object);
 
             // Act
@@ -170,8 +171,8 @@ namespace MagicMoq.Tests.DAL
         {
             // Arrange
             Mock<Answers> mock_answers = new Mock<Answers>();
+            mock_answers.Setup(a => a.EmptyString()).Returns("");
             
-            // Add code that mocks the "EmptyString" method response
             Questions questions = new Questions(mock_answers.Object);
 
             // Act
@@ -185,13 +186,37 @@ namespace MagicMoq.Tests.DAL
         [TestMethod]
         public void EnsureTwoPlusTwoReturnsFour()
         {
-            // Write this test
+            //Arrange
+            Mock<Answers> mock_answers = new Mock<Answers>();
+            mock_answers.Setup(a => a.Two()).Returns(2);
+
+            Questions questions = new Questions(mock_answers.Object);
+
+            //Act
+            int expected_result = 4;
+            int actual_result = questions.TwoPlusTwo();
+
+            //Assert
+            Assert.AreEqual(expected_result, actual_result);
         }
 
         [TestMethod]
         public void EnsureFourMinusTwoPlusOneReturnsThree()
         {
-            // Write this test
+            //Arrange
+            Mock<Answers> mock_answers = new Mock<Answers>();
+            mock_answers.Setup(a => a.Four()).Returns(4);
+            mock_answers.Setup(b => b.Two()).Returns(2);
+            mock_answers.Setup(c => c.One()).Returns(1);
+
+            Questions questions = new Questions(mock_answers.Object);
+
+            //Act
+            int expected_result = 3;
+            int actual_result = questions.FourMinusTwoPlusOne();
+
+            //Assert
+            Assert.AreEqual(expected_result, actual_result);
         }
 
         [TestMethod]
@@ -217,7 +242,11 @@ namespace MagicMoq.Tests.DAL
         {
             //Arrange
             Mock<Answers> mock_answers = new Mock<Answers>();
-            mock_answers.Setup(a => a.ListOfNInts(It.IsAny<int>())).Returns(new List<int> { 1, 2, 3, 4, 5 });
+            //Less Restrictive: 
+            //mock_answers.Setup(a => a.ListOfNInts(It.IsAny<int>())).Returns(new List<int> { 1, 2, 3, 4, 5 });
+
+            //More Restrictive:
+            mock_answers.Setup(a => a.ListOfNInts(It.Is<int>(i => i == 5))).Returns(new List<int> { 1, 2, 3, 4, 5 });
 
             Questions questions = new Questions(mock_answers.Object);
 
@@ -232,13 +261,37 @@ namespace MagicMoq.Tests.DAL
         [TestMethod]
         public void EnsureFirstThreeEvenIntsReturnsListOfThreeEvenInts()
         {
-            // Write this test
+            //Arrange
+            Mock<Answers> mock_answers = new Mock<Answers>();
+            //"i" needs to be large enough so that the list contains 3 even numbers (you could have it go up to, say 100)
+            mock_answers.Setup(a => a.ListOfNInts(It.Is<int>(i => i == 10))).Returns(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+
+            Questions questions = new Questions(mock_answers.Object);
+
+            //Act
+            List<int> expected_result = new List<int> { 2, 4, 6 };
+            List<int> actual_result = questions.FirstThreeEvenInts();
+
+            //Assert
+            CollectionAssert.AreEqual(expected_result, actual_result);
         }
 
         [TestMethod]
         public void EnsureFirstThreeOddIntsReturnsListOfThreeOddInts()
         {
-            // Write this test
+            //Arrange
+            Mock<Answers> mock_answers = new Mock<Answers>();
+            //"i" needs to be large enough so that the list contains 3 odd numbers (you could have it go up to, say 100)
+            mock_answers.Setup(a => a.ListOfNInts(It.Is<int>(i => i == 10))).Returns(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+
+            Questions questions = new Questions(mock_answers.Object);
+
+            //Act
+            List<int> expected_result = new List<int> { 1, 3, 5 };
+            List<int> actual_result = questions.FirstThreeOddInts();
+
+            //Assert
+            CollectionAssert.AreEqual(expected_result, actual_result);
         }
 
         [TestMethod]
